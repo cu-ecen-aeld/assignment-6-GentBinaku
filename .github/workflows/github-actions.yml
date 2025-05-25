@@ -19,8 +19,8 @@ jobs:
           - name: Run build
             timeout-minutes: 600
             run: |
+               echo ${GITHUB_WORKSPACE}
                 docker run --rm \
-                  --user $(id -u):$(id -g) \
                   -v $SSH_AUTH_SOCK:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent \
                   -e GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" \
                   -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
