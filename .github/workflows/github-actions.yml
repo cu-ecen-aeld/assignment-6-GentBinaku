@@ -19,16 +19,13 @@ jobs:
           - name: Run build
             timeout-minutes: 600
             run: |
-              WORKSPACE="${GITHUB_WORKSPACE:-$(pwd)}"
-              sudo docker run --rm \
-                -v ${SSH_AUTH_SOCK}:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent \
-                -e GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" \
-                -v "${WORKSPACE}:${WORKSPACE}" \
-                -w "${WORKSPACE}" \
-                -e "HOME=${HOME}" \  # Preserve home directory
-                --user $(id -u):$(id -g) \  # Run as current user
-                cuaesd/aesd-autotest:24-assignment6-yocto \
-                ./build.sh
+               docker run --rm \
+                  -v ${SSH_AUTH_SOCK}:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent \
+                  -e GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" \
+                  -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
+                  cuaesd/aesd-autotest:24-assignment6-yocto \
+                  --workdir=${GITHUB_WORKSPACE} \
+                  ./build.sh
           - name: Cleanup
             if: always()
             run: |
